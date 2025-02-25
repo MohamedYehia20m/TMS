@@ -12,7 +12,7 @@ public class UserSaveDto {
 
     private String username;
 
-    private Long workspaceId;
+    private Workspace workspace;
 
     private String phone;
 

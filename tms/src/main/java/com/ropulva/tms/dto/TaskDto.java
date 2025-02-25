@@ -13,7 +13,7 @@ public class TaskDto {
 
     private String description;
 
-    private Long workspaceId;
+    private Workspace workspace;
 
     private Status status;
 }
