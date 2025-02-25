@@ -1,13 +1,12 @@
 package com.ropulva.tms.model;
 
-import com.ropulva.tms.enums.Department;
 import com.ropulva.tms.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Data
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task {
 
     @Id
