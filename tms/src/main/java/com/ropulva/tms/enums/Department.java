@@ -1,4 +1,11 @@
 package com.ropulva.tms.enums;
 
-public class Department {
+public enum Department {
+    HR,
+    IT,
+    SALES,
+    MARKETING,
+    FINANCE,
+    OPERATIONS,
+    ADMINISTRATION
 }

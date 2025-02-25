@@ -1,4 +1,6 @@
 package com.ropulva.tms.enums;
 
-public class Status {
+public enum Status {
+    PENDING,
+    DONE
 }
