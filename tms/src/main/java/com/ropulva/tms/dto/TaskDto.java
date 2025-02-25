@@ -1,0 +1,19 @@
+package com.ropulva.tms.dto;
+
+import com.ropulva.tms.enums.Status;
+import com.ropulva.tms.model.Workspace;
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
+@Data
+@Component
+public class TaskDto {
+
+    private String title;
+
+    private String description;
+
+    private Long workspaceId;
+
+    private Status status;
+}
