@@ -77,9 +77,11 @@ public class UserServiceImpl implements IUserService {
         }
         catch (DataIntegrityViolationException | OptimisticLockingFailureException | IllegalStateException e) {
             return ResponseEntity.status(409).build();
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).build();
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(500).build();
         }
     }
@@ -93,11 +95,14 @@ public class UserServiceImpl implements IUserService {
             } else {
                 return ResponseEntity.status(404).build();
             }
-        }catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
+        }
+        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
             return ResponseEntity.status(409).build();
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).build();
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(500).build();
         }
     }

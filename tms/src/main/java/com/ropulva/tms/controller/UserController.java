@@ -30,7 +30,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return userServiceImpl.createUser(userDto);
-
     }
 
     @PutMapping
