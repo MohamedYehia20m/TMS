@@ -6,6 +6,7 @@ import com.ropulva.tms.model.User;
 import com.ropulva.tms.service.UserServiceImpl;
 import lombok.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -17,30 +18,28 @@ public class UserController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<User> getUsers() {
-        return userServiceImpl.getUsers().stream().map(userDto -> modelMapper.map(userDto, User.class)).toList();
+    public ResponseEntity<List<UserDto>> getUsers() {
+        return userServiceImpl.getUsers();
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return modelMapper.map(userServiceImpl.getUser(id), User.class);
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+        return userServiceImpl.getUser(id);
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        return modelMapper.map(userServiceImpl.createUser(userDto), User.class);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return userServiceImpl.createUser(userDto);
+
     }
 
-    @PutMapping()
-    public UserDto updateUser(@RequestBody UserSaveDto userSaveDto) {
-        UserSaveDto updatedUserSaveDto =  userServiceImpl.updateUser(userSaveDto);
-        return modelMapper.map(updatedUserSaveDto, UserDto.class);
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserSaveDto userSaveDto) {
+        return userServiceImpl.updateUser(userSaveDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userServiceImpl.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        return userServiceImpl.deleteUser(id);
     }
-
 }
