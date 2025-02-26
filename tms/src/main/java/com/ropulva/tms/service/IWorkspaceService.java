@@ -2,18 +2,19 @@ package com.ropulva.tms.service;
 
 import com.ropulva.tms.dto.WorkspaceDto;
 import com.ropulva.tms.dto.WorkspaceSaveDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface IWorkspaceService {
 
-    List<WorkspaceDto> getWorkspaces();
+    ResponseEntity<List<WorkspaceDto>> getWorkspaces();
 
-    WorkspaceDto getWorkspace(Long id);
+    ResponseEntity<WorkspaceDto> getWorkspace(Long id);
 
-    WorkspaceDto createWorkspace(WorkspaceDto workspaceDto);
+    ResponseEntity<WorkspaceDto> createWorkspace(WorkspaceDto workspaceDto);
 
-    WorkspaceSaveDto updateWorkspace(WorkspaceSaveDto workspaceSaveDto);
+    ResponseEntity<WorkspaceDto> updateWorkspace(WorkspaceSaveDto workspaceSaveDto);
 
-    void deleteWorkspace(Long id);
+    ResponseEntity<Void> deleteWorkspace(Long id);
 }

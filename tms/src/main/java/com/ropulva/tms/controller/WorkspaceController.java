@@ -7,6 +7,7 @@ import com.ropulva.tms.model.Workspace;
 import com.ropulva.tms.service.WorkspaceServiceImpl;
 import lombok.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -18,29 +19,28 @@ public class WorkspaceController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<Workspace> getWorkspaces() {
-        return workspaceServiceImpl.getWorkspaces().stream().map(workspaceDto -> modelMapper.map(workspaceDto, Workspace.class)).toList();
+    public ResponseEntity<List<WorkspaceDto>> getWorkspaces() {
+        return workspaceServiceImpl.getWorkspaces();
     }
 
     @GetMapping("/{id}")
-    public Workspace getWorkspace(@PathVariable Long id) {
-        return modelMapper.map(workspaceServiceImpl.getWorkspace(id), Workspace.class);
+    public ResponseEntity<WorkspaceDto> getWorkspace(@PathVariable Long id) {
+        return workspaceServiceImpl.getWorkspace(id);
     }
 
     @PostMapping
-    public WorkspaceDto createWorkspace(@RequestBody WorkspaceDto workspaceDto) {
+    public ResponseEntity<WorkspaceDto> createWorkspace(@RequestBody WorkspaceDto workspaceDto) {
         return workspaceServiceImpl.createWorkspace(workspaceDto);
     }
 
     @PutMapping()
-    public WorkspaceDto updateWorkspace(@RequestBody WorkspaceSaveDto workspaceSaveDto) {
-        WorkspaceSaveDto updatedWorkspaceSaveDto =  workspaceServiceImpl.updateWorkspace(workspaceSaveDto);
-        return modelMapper.map(updatedWorkspaceSaveDto, WorkspaceDto.class);
+    public ResponseEntity<WorkspaceDto> updateWorkspace(@RequestBody WorkspaceSaveDto workspaceSaveDto) {
+        return workspaceServiceImpl.updateWorkspace(workspaceSaveDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteWorkspace(@PathVariable Long id) {
-        workspaceServiceImpl.deleteWorkspace(id);
+    public ResponseEntity<Void> deleteWorkspace(@PathVariable Long id) {
+        return workspaceServiceImpl.deleteWorkspace(id);
     }
 
 }
