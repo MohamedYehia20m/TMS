@@ -38,6 +38,16 @@ public class TaskController {
         return taskServiceImpl.updateTask(taskSaveDto);
     }
 
+    @PutMapping("Done/{id}")
+    public ResponseEntity<TaskDto> updateTaskDone(@PathVariable Long id) {
+        return taskServiceImpl.updateTaskDone(id);
+    }
+
+    @PutMapping("Undone/{id}")
+    public ResponseEntity<TaskDto> updateTaskUndone(@PathVariable Long id) {
+        return taskServiceImpl.updateTaskUndone(id);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         return taskServiceImpl.deleteTask(id);

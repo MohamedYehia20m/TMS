@@ -16,5 +16,9 @@ public interface ITaskService {
 
     ResponseEntity<TaskDto> updateTask(TaskSaveDto taskSaveDto);
 
+    ResponseEntity<TaskDto> updateTaskDone(Long id);
+
+    ResponseEntity<TaskDto> updateTaskUndone(Long id);
+
     ResponseEntity<Void> deleteTask(Long id);
 }

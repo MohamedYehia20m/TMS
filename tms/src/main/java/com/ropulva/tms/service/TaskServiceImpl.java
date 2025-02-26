@@ -3,6 +3,7 @@ package com.ropulva.tms.service;
 import com.ropulva.tms.dto.TaskDto;
 import com.ropulva.tms.dto.TaskSaveDto;
 import com.ropulva.tms.dto.UserDto;
+import com.ropulva.tms.enums.Status;
 import com.ropulva.tms.model.Task;
 import com.ropulva.tms.model.User;
 import com.ropulva.tms.repository.TaskRepository;
@@ -82,6 +83,46 @@ public class TaskServiceImpl implements ITaskService {
         }
         catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).build();
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    public ResponseEntity<TaskDto> updateTaskDone(Long id) {
+        try {
+            Optional<Task> taskOptional = taskRepository.findById(id);
+            if (taskOptional.isPresent()) {
+                Task task = taskOptional.get();
+                task.setStatus(Status.DONE);
+                Task updatedTask = taskRepository.save(task);
+                return ResponseEntity.status(200).body(modelMapper.map(updatedTask, TaskDto.class));
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        }
+        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
+            return ResponseEntity.status(409).build();
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    public ResponseEntity<TaskDto> updateTaskUndone(Long id) {
+        try {
+            Optional<Task> taskOptional = taskRepository.findById(id);
+            if (taskOptional.isPresent()) {
+                Task task = taskOptional.get();
+                task.setStatus(Status.PENDING);
+                Task updatedTask = taskRepository.save(task);
+                return ResponseEntity.status(200).body(modelMapper.map(updatedTask, TaskDto.class));
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        }
+        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
+            return ResponseEntity.status(409).build();
         }
         catch (RuntimeException e) {
             return ResponseEntity.status(500).build();
