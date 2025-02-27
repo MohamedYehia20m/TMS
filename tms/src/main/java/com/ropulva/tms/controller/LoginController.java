@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -23,6 +24,13 @@ public class LoginController {
                         loginRequest.phone()  // phone as password
                 )
         );
+
+
+        // Set the authentication in the security context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Verify the authorities
+        System.out.println("Authorities: " + authentication.getAuthorities());
 
         String roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

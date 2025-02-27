@@ -91,9 +91,13 @@ public class UserServiceImpl implements IUserService {
 
     public ResponseEntity<UserDto> updateUser(UserSaveDto userSaveDto) {
         try {
+
             Optional<User> userOptional = userRepository.findById(userSaveDto.getId());
             if (userOptional.isPresent()) {
-                User updatedUser = userRepository.save(modelMapper.map(userSaveDto, User.class));
+                User user = modelMapper.map(userSaveDto, User.class);
+                // Encode password
+                user.setPhone(passwordEncoder.encode(user.getPhone())); // phone is used as password
+                User updatedUser = userRepository.save(user);
                 return ResponseEntity.status(200).body(modelMapper.map(updatedUser, UserDto.class));
             } else {
                 return ResponseEntity.status(404).build();
