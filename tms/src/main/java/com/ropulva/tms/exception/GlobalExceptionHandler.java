@@ -59,4 +59,13 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ErrorResponse> handleSecurityException(SecurityException ex) {
+        log.warn("Security exception", ex);
+        return new ResponseEntity<>(
+                new ErrorResponse("Unauthorized", ex.getMessage(), 401),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
 }
