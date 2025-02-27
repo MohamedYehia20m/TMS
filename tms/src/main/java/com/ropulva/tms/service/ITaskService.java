@@ -10,11 +10,11 @@ public interface ITaskService {
 
     ResponseEntity<List<TaskDto>> getTasks();
 
-    ResponseEntity<TaskDto> getTask(Long id) throws Exception;
+    ResponseEntity<TaskDto> getTask(Long id);
 
-    ResponseEntity<TaskDto> createTask(TaskDto taskDto) throws Exception;
+    ResponseEntity<TaskDto> createTask(TaskDto taskDto);
 
-    ResponseEntity<TaskDto> updateTask(TaskSaveDto taskSaveDto) throws Exception;
+    ResponseEntity<TaskDto> updateTask(TaskSaveDto taskSaveDto);
 
     ResponseEntity<TaskDto> updateTaskDone(Long id);
 
