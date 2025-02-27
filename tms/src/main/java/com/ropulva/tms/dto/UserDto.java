@@ -1,5 +1,6 @@
 package com.ropulva.tms.dto;
 
+import com.ropulva.tms.enums.Role;
 import com.ropulva.tms.model.Workspace;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,10 @@ import org.springframework.stereotype.Component;
 public class UserDto {
 
     private String username;
+
+    //private String password;
+
+    private Role role;
 
     private Workspace workspace;
 

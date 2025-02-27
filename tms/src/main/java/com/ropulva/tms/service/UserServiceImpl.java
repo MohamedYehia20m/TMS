@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +22,7 @@ public class UserServiceImpl implements IUserService {
     final UserRepository userRepository;
     final ModelMapper modelMapper;
     private Logger logger;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<List<UserDto>> getUsers() {
         try{
@@ -49,10 +52,30 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    public ResponseEntity<UserDto> getUserByEmail(String email) {
+        try {
+            Optional<User> user = userRepository.findByEmail(email);
+            if (user.isPresent()) {
+                return ResponseEntity.status(200).body(modelMapper.map(user, UserDto.class));
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        }
+        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
+            return ResponseEntity.status(409).build();
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     public ResponseEntity<UserDto> createUser(UserDto userDto) {
         try {
-            User user = userRepository.save(modelMapper.map(userDto, User.class));
-            return ResponseEntity.status(201).body(modelMapper.map(user, UserDto.class));
+            User user = modelMapper.map(userDto, User.class);
+            // Encode password
+            user.setPhone(passwordEncoder.encode(user.getPhone())); // phone is used as password
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.status(201).body(modelMapper.map(savedUser, UserDto.class));
         }
         catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).build();
@@ -64,6 +87,7 @@ public class UserServiceImpl implements IUserService {
             return ResponseEntity.status(500).build();
         }
     }
+
 
     public ResponseEntity<UserDto> updateUser(UserSaveDto userSaveDto) {
         try {

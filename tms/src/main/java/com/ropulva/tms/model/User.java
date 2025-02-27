@@ -1,5 +1,6 @@
 package com.ropulva.tms.model;
 
+import com.ropulva.tms.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,11 +16,17 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    //private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @ManyToOne
     @JoinColumn(name = "workspace_id")
     private Workspace workspace;
 
-    @Column(nullable = false , length = 11)
+    @Column(nullable = false)
     private String phone;
 
     @Column(nullable = false, unique = true)
