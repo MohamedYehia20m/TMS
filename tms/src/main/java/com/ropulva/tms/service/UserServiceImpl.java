@@ -6,11 +6,9 @@ import com.ropulva.tms.model.User;
 import com.ropulva.tms.repository.UserRepository;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,7 @@ import java.util.*;
 public class UserServiceImpl implements IUserService {
     final UserRepository userRepository;
     final ModelMapper modelMapper;
-    private Logger logger;
+
     private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<List<UserDto>> getUsers() {
@@ -39,23 +37,6 @@ public class UserServiceImpl implements IUserService {
             Optional<User> userOptional = userRepository.findById(id);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                return ResponseEntity.status(200).body(modelMapper.map(user, UserDto.class));
-            } else {
-                return ResponseEntity.status(404).build();
-            }
-        }
-        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
-            return ResponseEntity.status(409).build();
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(500).build();
-        }
-    }
-
-    public ResponseEntity<UserDto> getUserByEmail(String email) {
-        try {
-            Optional<User> user = userRepository.findByEmail(email);
-            if (user.isPresent()) {
                 return ResponseEntity.status(200).body(modelMapper.map(user, UserDto.class));
             } else {
                 return ResponseEntity.status(404).build();

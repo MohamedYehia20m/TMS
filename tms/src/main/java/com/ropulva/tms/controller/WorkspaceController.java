@@ -2,11 +2,8 @@ package com.ropulva.tms.controller;
 
 import com.ropulva.tms.dto.WorkspaceDto;
 import com.ropulva.tms.dto.WorkspaceSaveDto;
-import com.ropulva.tms.model.Task;
-import com.ropulva.tms.model.Workspace;
 import com.ropulva.tms.service.WorkspaceServiceImpl;
 import lombok.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,7 +13,6 @@ import java.util.List;
 @RequestMapping("/api/workspaces")
 public class WorkspaceController {
     private final WorkspaceServiceImpl workspaceServiceImpl;
-    private final ModelMapper modelMapper;
 
     @GetMapping
     public ResponseEntity<List<WorkspaceDto>> getWorkspaces() {

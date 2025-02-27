@@ -1,12 +1,9 @@
 package com.ropulva.tms.service;
 
-import com.ropulva.tms.dto.TaskDto;
 import com.ropulva.tms.dto.WorkspaceDto;
 import com.ropulva.tms.dto.WorkspaceSaveDto;
-import com.ropulva.tms.model.Task;
 import com.ropulva.tms.model.Workspace;
 import com.ropulva.tms.repository.WorkspaceRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;

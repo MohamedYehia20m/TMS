@@ -2,11 +2,8 @@ package com.ropulva.tms.controller;
 
 import com.ropulva.tms.dto.TaskDto;
 import com.ropulva.tms.dto.TaskSaveDto;
-import com.ropulva.tms.dto.UserDto;
-import com.ropulva.tms.model.Task;
 import com.ropulva.tms.service.TaskServiceImpl;
 import lombok.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,7 +13,6 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
     private final TaskServiceImpl taskServiceImpl;
-    private final ModelMapper modelMapper;
 
     @GetMapping
     public ResponseEntity<List<TaskDto>> getTasks() {
