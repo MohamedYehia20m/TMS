@@ -23,8 +23,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 )
+                .securityContext(securityContext -> {
+                    securityContext.requireExplicitSave(false);
+                })
                 .authorizeHttpRequests(authorize -> authorize
 
                         .requestMatchers("/login").permitAll() // login
