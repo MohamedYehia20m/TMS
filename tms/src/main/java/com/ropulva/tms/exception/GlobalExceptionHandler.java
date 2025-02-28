@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation", ex);
         return new ResponseEntity<>(
-                new ErrorResponse("Conflict", "Data integrity violation", 409),
+                new ErrorResponse("Conflict", "Data integrity violation " + ex.getMessage(), 409),
                 HttpStatus.CONFLICT
         );
     }
