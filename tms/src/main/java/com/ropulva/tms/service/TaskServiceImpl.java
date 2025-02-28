@@ -53,9 +53,9 @@ public class TaskServiceImpl implements ITaskService {
 
     public ResponseEntity<TaskDto> updateTask(TaskSaveDto taskSaveDto) {
         try {
-            Task task = taskRepository.findById(taskSaveDto.getId())
+            Task existingTask = taskRepository.findById(taskSaveDto.getId())
                     .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + taskSaveDto.getId()));
-            Task updatedTask = taskRepository.save(task);
+            Task updatedTask = taskRepository.save(modelMapper.map(taskSaveDto, Task.class));
             return ResponseEntity.status(200).body(modelMapper.map(updatedTask, TaskDto.class));
         }
         catch (IllegalArgumentException e) {
