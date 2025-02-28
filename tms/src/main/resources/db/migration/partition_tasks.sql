@@ -31,3 +31,13 @@ INSERT INTO tasks (title, description, workspace_id, status) VALUES ('Task 5', '
 INSERT INTO tasks (title, description, workspace_id, status) VALUES ('Task 6', 'Description 6', 2, 'PENDING');
 INSERT INTO tasks (title, description, workspace_id, status) VALUES ('Task 7', 'Description 7', 3, 'PENDING');
 INSERT INTO tasks (title, description, workspace_id, status) VALUES ('Task 8', 'Description 8', 4, 'PENDING');
+
+-- Create User table
+CREATE TABLE users (
+                       id BIGSERIAL,
+                       name VARCHAR(255) NOT NULL,
+                       email VARCHAR(255) NOT NULL,
+                       workspace_id BIGINT NOT NULL,
+                       PRIMARY KEY (id),
+                       FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+);
