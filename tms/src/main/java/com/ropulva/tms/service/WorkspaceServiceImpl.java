@@ -4,6 +4,7 @@ import com.ropulva.tms.dto.WorkspaceDto;
 import com.ropulva.tms.dto.WorkspaceSaveDto;
 import com.ropulva.tms.model.Workspace;
 import com.ropulva.tms.repository.WorkspaceRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,88 +21,63 @@ public class WorkspaceServiceImpl implements IWorkspaceService {
     final ModelMapper modelMapper;
 
     public ResponseEntity<List<WorkspaceDto>> getWorkspaces() {
-        try{
-            List<Workspace> workspaces = workspaceRepository.findAll();
-            return ResponseEntity.status(200).body(workspaces.stream().map(workspace -> modelMapper.map(workspace, WorkspaceDto.class)).toList());
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(500).build();
-        }
+        List<Workspace> workspaces = workspaceRepository.findAll();
+        return ResponseEntity.ok(workspaces.stream()
+                .map(workspace -> modelMapper.map(workspace, WorkspaceDto.class))
+                .toList());
     }
 
     public ResponseEntity<WorkspaceDto> getWorkspace(Long id) {
-        try {
-            Optional<Workspace> workspaceOptional = workspaceRepository.findById(id);
-            if (workspaceOptional.isPresent()) {
-                Workspace workspace = workspaceOptional.get();
-                return ResponseEntity.status(200).body(modelMapper.map(workspace, WorkspaceDto.class));
-            } else {
-                return ResponseEntity.status(404).build();
-            }
-        }
-        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
-            return ResponseEntity.status(409).build();
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(500).build();
-        }
+        Workspace workspace = workspaceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Workspace not found with id: " + id));
+        return ResponseEntity.ok(modelMapper.map(workspace, WorkspaceDto.class));
     }
 
     public ResponseEntity<WorkspaceDto> createWorkspace(WorkspaceDto workspaceDto) {
         try {
             Workspace workspace = workspaceRepository.save(modelMapper.map(workspaceDto, Workspace.class));
-            return ResponseEntity.status(201).body(modelMapper.map(workspace, WorkspaceDto.class));
+            return ResponseEntity.ok(modelMapper.map(workspace, WorkspaceDto.class));
         }
         catch (IllegalArgumentException e) {
-            return ResponseEntity.status(400).build();
+            throw new IllegalArgumentException("Invalid task data");
         }
         catch (IllegalStateException e) {
-            return ResponseEntity.status(409).build();
+            throw new IllegalStateException("Invalid task data");
         }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(500).build();
+        catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Invalid task data, constraint violation");
+        }
+        catch (OptimisticLockingFailureException e) {
+            throw new OptimisticLockingFailureException("Invalid task data, optimistic locking failure");
         }
     }
 
     public ResponseEntity<WorkspaceDto> updateWorkspace(WorkspaceSaveDto workspaceSaveDto) {
         try {
-            Optional<Workspace> workspaceOptional = workspaceRepository.findById(workspaceSaveDto.getId());
-            if (workspaceOptional.isPresent()) {
+            Workspace existingWorkspace = workspaceRepository.findById(workspaceSaveDto.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Workspace not found with id: " + workspaceSaveDto.getId()));
+
                 Workspace updatedWorkspace = workspaceRepository.save(modelMapper.map(workspaceSaveDto, Workspace.class));
-                return ResponseEntity.status(200).body(modelMapper.map(updatedWorkspace, WorkspaceDto.class));
-            } else {
-                return ResponseEntity.status(404).build();
-            }
-        }
-        catch (DataIntegrityViolationException | OptimisticLockingFailureException | IllegalStateException e) {
-            return ResponseEntity.status(409).build();
+                return ResponseEntity.ok(modelMapper.map(updatedWorkspace, WorkspaceDto.class));
         }
         catch (IllegalArgumentException e) {
-            return ResponseEntity.status(400).build();
+            throw new IllegalArgumentException("Invalid task data");
         }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(500).build();
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Invalid task data");
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Invalid task data, constraint violation");
+        }
+        catch (OptimisticLockingFailureException e) {
+            throw new OptimisticLockingFailureException("Invalid task data, optimistic locking failure");
         }
     }
 
     public ResponseEntity<Void> deleteWorkspace(Long id) {
-        try {
-            Optional<Workspace> workspaceOptional  = workspaceRepository.findById(id);
-            if (workspaceOptional.isPresent()) {
-                workspaceRepository.delete(workspaceOptional.get());
-                return ResponseEntity.status(204).build();
-            } else {
-                return ResponseEntity.status(404).build();
-            }
-        }
-        catch (DataIntegrityViolationException | OptimisticLockingFailureException e) {
-            return ResponseEntity.status(409).build();
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(400).build();
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(500).build();
-        }
+        Workspace workspace = workspaceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Workspace not found with id: " + id));
+        workspaceRepository.delete(workspace);
+        return ResponseEntity.noContent().build();
     }
 }
