@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name = "tasks")
+@Table(name = "tasks" , schema = "public")
 public class Task {
 
     @Id
